@@ -17,9 +17,9 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "jest",
     "eject": "react-scripts eject",
-    "test-watch": "npm test -- --watch"
+    "test": "react-scripts test",
+    "test-watch": "npm run test -- --watch"
   },
   "eslintConfig": {
     "extends": "react-app"
