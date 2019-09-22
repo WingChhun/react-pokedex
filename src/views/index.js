@@ -1,6 +1,6 @@
-import AppRouter from "./Router";
+import Main from "./Main";
 
 
 export {
-  AppRouter
+  Main
 };
