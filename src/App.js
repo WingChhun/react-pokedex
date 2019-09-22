@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
 function App() {
+  const [value, setValue] = useState('');
+
+
   return (
     <div className="App">
       <header className="App-header">
@@ -18,6 +21,9 @@ function App() {
         >
           Learn React
         </a>
+
+        <input value={value} onChange={(e) => setValue(e.target.value)} />
+
       </header>
     </div>
   );
