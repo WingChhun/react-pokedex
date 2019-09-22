@@ -1,34 +1,24 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import _noop from 'lodash/noop';
 
-
 const Input = styled.input`
-  border:2px solid red;
-  width:100%;
-  `;
-
+  border: 2px solid red;
+  width: 100%;
+`;
 
 function TextField(props) {
-  const { type, onChange } = props;
-  const [value, setValue] = useState(props.value);
+  const { value, type, onChange, ...rest } = props;
 
-  const handleChange = (e) => {
-    setValue(e.target.value);
-    onChange(e.target.value);
-  }
-
-  return (
-    <Input type={type} value={value} onChange={handleChange} />
-  )
-};
-
+  return <Input type={type} value={value} onChange={onChange} {...rest} />;
+}
 
 TextField.propTypes = {
   onChange: PropTypes.func,
   value: PropTypes.string,
-  type: PropTypes.string
+  type: PropTypes.string,
+  context: PropTypes.string
 };
 
 TextField.defaultProps = {
@@ -36,6 +26,5 @@ TextField.defaultProps = {
   type: 'text',
   onChange: _noop()
 };
-
 
 export default TextField;
