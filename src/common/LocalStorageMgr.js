@@ -8,7 +8,7 @@ class LocalStorage {
   init() {
     //todo: this should check localStorage
 
-    this._session = localStorage.getItem('SESSION') || {};
+    this._session = localStorage.getItem(SESSION) || {};
   }
 
   set session(session) {
@@ -18,6 +18,10 @@ class LocalStorage {
   get session() {
     return this._session;
   }
+
+  cacheOnClose = () => {
+    localStorage.setItem(SESSION, this._session);
+  };
 
   setReducer = (action, payload) => {
     if (!action || !payload) return;

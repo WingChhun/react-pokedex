@@ -1,8 +1,10 @@
 import { API } from '../constants';
 
-//todo: return
-export const fetchPokemon = () => {
-  return fetch(API.BASE)
-    .then(res => res.json())
-    .catch(e => console.warn(e));
+export const fetchPokemon = (LIMIT = 0) => {
+  return new Promise((resolve, reject) => {
+    fetch(`${API.BASE}/pokemon?limit=${LIMIT}`)
+      .then(res => res.json())
+      .then(data => resolve(data))
+      .catch(err => reject(err));
+  });
 };

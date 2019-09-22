@@ -27,11 +27,10 @@ class PokemonProvider extends PureComponent {
 
     if (!pokemon.length) {
       try {
-        const response = await fetch(`${API.BASE}/pokemon?limit=${LIMIT}`);
-        const { results = [] } = await response.json();
+        const { results = [] } = await fetchPokemon(LIMIT);
 
         if (results.length) {
-          localStorage.setItem('ALL_POKEMON'); //cache
+          LocalStorageMgr.setReducer(POKEMON.ALL, results);
           this.setState({ pokemon: results });
         }
       } catch (err) {
