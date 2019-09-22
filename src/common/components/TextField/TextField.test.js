@@ -12,6 +12,6 @@ describe(`<TextField/>`, () => {
 
   it(`renders properly`, () => {
     const wrapper = shallow(<TextField />);
-    expect(wrapper.toMatchSnapshot());
+    expect(wrapper).toMatchSnapshot();
   })
 });
