@@ -21,6 +21,10 @@
     "test": "react-scripts test",
     "test-watch": "npm run test -- --watch"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/WingChhun/react-pokedex"
+  },
   "eslintConfig": {
     "extends": "react-app"
   },
