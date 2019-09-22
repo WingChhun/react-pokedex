@@ -1,7 +1,2 @@
-import Main from "./Main";
-import Detailed from "./Detailed";
-
-export {
-  Main,
-  Detailed
-};
+export { default as Main } from './Main';
+export { default as Detailed } from './Detailed';

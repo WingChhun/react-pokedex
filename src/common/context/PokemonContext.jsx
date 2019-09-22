@@ -1,12 +1,10 @@
-import React, { PureComponent, createContext, useContext } from 'react';
-import PropTypes from 'prop-types';
-import { API, POKEMON } from '../constants';
+import React, { PureComponent, createContext } from 'react';
+import _keyBy from 'lodash/keyBy';
+import { POKEMON } from '../constants';
 import { fetchPokemon } from '../api';
-import { logger } from '../utils';
 import LocalStorageMgr from '../LocalStorageMgr';
 
 const LIMIT = 151;
-const initialPokemon = LocalStorageMgr.getReducer(POKEMON.ALL) || {};
 
 const PokemonContext = createContext();
 const { Provider, Consumer } = PokemonContext;
@@ -17,7 +15,7 @@ class PokemonProvider extends PureComponent {
 
     this.state = {
       filterStr: '',
-      pokemon: initialPokemon || [],
+      pokemon: LocalStorageMgr.getReducer(POKEMON.ALL) || {},
       onChange: this.onChangeFilter
     };
   }
@@ -26,12 +24,15 @@ class PokemonProvider extends PureComponent {
     const { pokemon } = this.state;
 
     if (!pokemon.length) {
+      //fixme: remove later
+      console.warn('Fetching Pokemon in PokemonContext');
       try {
         const { results = [] } = await fetchPokemon(LIMIT);
 
         if (results.length) {
-          LocalStorageMgr.setReducer(POKEMON.ALL, results);
-          this.setState({ pokemon: results });
+          const keyedPokemon = _keyBy(results, 'name');
+          LocalStorageMgr.setReducer(POKEMON.ALL, keyedPokemon);
+          this.setState({ pokemon: keyedPokemon });
         }
       } catch (err) {
         //todo: this could go into a snackbar

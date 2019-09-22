@@ -1,14 +1,11 @@
 import { POKEMON, SESSION } from './constants';
-import _keyBy from 'lodash/keyBy';
 
 //Manages get/set(ing) of cached data, resembles the structure of a redux reducer
 class LocalStorage {
   _session = {};
 
   init() {
-    //todo: this should check localStorage
-
-    this._session = localStorage.getItem(SESSION) || {};
+    this._session = JSON.parse(localStorage.getItem(SESSION)) || {};
   }
 
   set session(session) {
@@ -20,16 +17,15 @@ class LocalStorage {
   }
 
   cacheOnClose = () => {
-    localStorage.setItem(SESSION, this._session);
+    localStorage.setItem(SESSION, JSON.stringify(this._session));
   };
 
   setReducer = (action, payload) => {
     if (!action || !payload) return;
 
-    this._session = {
-      ...this._session,
+    Object.assign(this._session, {
       [action]: payload
-    };
+    });
   };
 
   getReducer = action => {
@@ -37,14 +33,8 @@ class LocalStorage {
 
     switch (action) {
       case POKEMON.ALL:
-        //note: ALL_POKEMON resembles collection ([{name:string , url:string}])
-
-        return this._session[POKEMON.ALL]
-          ? _keyBy(this._session[POKEMON.ALL], 'name')
-          : {};
+        return { ...this._session[POKEMON.ALL] };
     }
-
-    return this._session;
   };
 }
 

@@ -1,2 +1,1 @@
-export {PokemonProvider, PokemonContext} from "./PokemonContext";
-
+export * from './PokemonContext';
