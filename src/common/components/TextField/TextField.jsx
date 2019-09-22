@@ -11,23 +11,29 @@ const Input = styled.input`
 
 
 function TextField(props) {
+  const { type, onChange } = props;
   const [value, setValue] = useState(props.value);
 
-  const handleChange = (e) => setValue(e.target.value);
+  const handleChange = (e) => {
+    setValue(e.target.value);
+    onChange(e.target.value);
+  }
 
   return (
-    <Input value={value} onChange={handleChange} />
+    <Input type={type} value={value} onChange={handleChange} />
   )
 };
 
 
 TextField.propTypes = {
   onChange: PropTypes.func,
-  value: PropTypes.string
+  value: PropTypes.string,
+  type: PropTypes.string
 };
 
 TextField.defaultProps = {
   value: '',
+  type: 'text',
   onChange: _noop()
 };
 

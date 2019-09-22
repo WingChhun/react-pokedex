@@ -3,8 +3,6 @@ import PropTypes from 'react';
 import styled from 'styled-components';
 
 
-
-
 class Detailed extends Component {
 
   render() {
