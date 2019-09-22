@@ -1,14 +1,11 @@
 import React from 'react';
-import {
-  BrowserRouter as Router,
-  Route,
-  Link
-} from 'react-router-dom';
-import { Main, Detailed } from "./views";
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { Main, Detailed } from './views';
+import LocalStorageMgr from './common/LocalStorageMgr';
 
-
-//todo: detailed's route should hold the pokemon id
+LocalStorage.Mgrinit();
 function AppRouter(props) {
+  //todo: /detailed should have a unique id associated with the URL
   return (
     <Router>
       <Route exact path={'/'} component={Main} />
@@ -16,6 +13,5 @@ function AppRouter(props) {
     </Router>
   );
 }
-
 
 export default AppRouter;

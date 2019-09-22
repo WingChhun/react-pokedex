@@ -1,14 +1,14 @@
 import React from 'react';
-import TextField from './TextField';
+import Toggle from './Toggle';
 import { configure, shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 
 configure({ adapter: new Adapter() });
 
 //todo: test hooks
-describe(`<TextField/>`, () => {
+describe(`<Toggle/>`, () => {
   it(`renders properly`, () => {
-    const wrapper = shallow(<TextField />);
+    const wrapper = shallow(<Toggle />);
     expect(wrapper).toMatchSnapshot();
   });
 });

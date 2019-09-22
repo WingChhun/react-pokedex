@@ -1,37 +1,27 @@
 import React, { PureComponent, createContext, useContext } from 'react';
 import PropTypes from 'prop-types';
-import { API } from '../constants';
+import { API, POKEMON } from '../constants';
 import { fetchPokemon } from '../api';
 import { logger } from '../utils';
-
+import LocalStorageMgr from '../LocalStorageMgr';
 
 const LIMIT = 151;
+const initialPokemon = LocalStorageMgr.getReducer(POKEMON.ALL) || {};
 
-//todo: default createContext to localStorage
-const PokemonContext = createContext({
-  pokemon: localStorage.getItem('ALL_POKEMON') || []
-});
+const PokemonContext = createContext();
 const { Provider, Consumer } = PokemonContext;
 
 class PokemonProvider extends PureComponent {
-  static getPokemon = () => {
-    const { pokemon } = useContext(PokemonContext);
-
-  return pokemon;
-  };
-
   constructor(props) {
     super(props);
 
     this.state = {
       filterStr: '',
-      pokemon: this.getPokemon || [],
+      pokemon: initialPokemon || [],
       onChange: this.onChangeFilter
-    };  
+    };
   }
 
-  //todo: async await request to API
-  //todo: response can be cached into localStorage
   async componentDidMount() {
     const { pokemon } = this.state;
 
@@ -41,7 +31,7 @@ class PokemonProvider extends PureComponent {
         const { results = [] } = await response.json();
 
         if (results.length) {
-          localStorage.setItem('ALL_POKEMON');
+          localStorage.setItem('ALL_POKEMON'); //cache
           this.setState({ pokemon: results });
         }
       } catch (err) {

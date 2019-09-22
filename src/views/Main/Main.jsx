@@ -3,24 +3,18 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import memoize from 'memoize-one';
 import { PokemonProvider } from '../../common/context';
-import { PokemonList, TextField } from "../../common/components";
-
+import { PokemonList, TextField } from '../../common/components';
 
 //todo: Hook in Toggle Component
-//todo: 
+//todo:
 function Main(props) {
-
   return (
     <div>
-      
-        <PokemonProvider>
+      <PokemonProvider>
         <PokemonList />
       </PokemonProvider>
-      
-      
-      </div>
+    </div>
   );
 }
-
 
 export default Main;
