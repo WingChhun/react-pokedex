@@ -11,6 +11,7 @@ const Card = styled.div`
   align-items: center;
   justify-content: center;
 
+  //todo: this could be added to theme(MUI box shadow)
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 
@@ -20,15 +21,35 @@ const Card = styled.div`
   }
 `;
 
-//todo: this should be wrapped in a ReactRouter Link and go to detailed page
-function PokemonCard({ pokemon }) {
-  return <Card>{JSON.stringify(pokemon.name)}</Card>;
+const Image = styled.img`
+  width: 100%;
+  height: 100%;
+  max-height: 200px;
+
+  border: 1.5px dotted red;
+`;
+
+const getImage = spriteId =>
+  `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${spriteId}.png`;
+
+function PokemonCard({ pokemon, onClick, spriteId }) {
+  const { name } = pokemon;
+
+  return (
+    <Card onClick={onClick}>
+      <Image src={getImage(spriteId)} alt={`${name} image`} />
+    </Card>
+  );
 }
 
-//todo: update pokemon shape
+//todo: updatepokemon shape
 PokemonCard.propTypes = {
-  pokemon: PropTypes.object.isRequired
+  pokemon: PropTypes.object.isRequired,
+  onClick: PropTypes.func,
+  spriteId: PropTypes.number
 };
-PokemonCard.defaultProps = {};
+PokemonCard.defaultProps = {
+  spriteId: 1
+};
 
 export default PokemonCard;

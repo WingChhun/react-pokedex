@@ -1,5 +1,4 @@
 import React, { createContext, useReducer, useEffect } from 'react';
-import _keyBy from 'lodash/keyBy';
 import { POKEMON, API } from '../constants';
 import LocalStorageMgr from '../LocalStorageMgr';
 
@@ -9,7 +8,8 @@ const PokemonContext = createContext();
 const initialState = {
   filterStr: '',
   showSaved: false,
-  pokemon: {}
+  pokemon: {},
+  savedPokemon: []
 };
 
 //todo: Make constants for this reducer
@@ -30,12 +30,17 @@ const reducer = (state, action) => {
     case 'TOGGLE_SHOW_SAVED':
       return { showSaved: payload };
 
+    case 'SAVED_POKEMON':
+      return {
+        savedPokemon: [...state.savedPokemon, payload]
+      };
+
     default:
       throw new Error('Action type must be defined');
   }
 };
 
-const PokemonProvider = ({ children, ...rest }) => {
+const PokemonProvider = ({ children, history, ...rest }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   //componentDidMount
@@ -45,8 +50,7 @@ const PokemonProvider = ({ children, ...rest }) => {
     async function fetchPokemon() {
       try {
         const res = await fetch(`${API.BASE}/pokemon?limit=${LIMIT}`);
-        const { results = [] } = await res.json();
-        const payload = _keyBy(results, 'name');
+        const { results: payload } = await res.json();
 
         dispatch({
           type: 'READ_POKEMON',
@@ -66,8 +70,8 @@ const PokemonProvider = ({ children, ...rest }) => {
   }, []);
 
   return (
-    <PokemonContext.Provider value={[state, dispatch]} {...rest}>
-      {children}
+    <PokemonContext.Provider value={[state, dispatch]}>
+      {React.cloneElement(children, { history })}
     </PokemonContext.Provider>
   );
 };

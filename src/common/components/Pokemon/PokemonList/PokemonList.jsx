@@ -14,17 +14,30 @@ const PokemonGrid = styled.div`
   grid-gap: 20px;
 `;
 
-function PokemonList(props) {
+function PokemonList({ history }) {
   const [state] = useContext(PokemonContext);
   const { pokemon } = state;
 
-  const pokemonList = Object.values(pokemon);
+  //
+  const toggleView = ({ url }) => e => {
+    e.preventDefault();
+
+    history.push({
+      pathname: `/detailed/${pokemon.name}`,
+      state: { url }
+    });
+  };
 
   return (
     <PokemonGrid>
-      {pokemonList.length &&
-        pokemonList.map((pokemon, key) => (
-          <PokemonCard key={key} pokemon={pokemon} />
+      {pokemon.length &&
+        pokemon.map((pokemon, id) => (
+          <PokemonCard
+            key={`${pokemon.name}__${id}`}
+            spriteId={id + 1}
+            pokemon={pokemon}
+            onClick={toggleView(pokemon)}
+          />
         ))}
     </PokemonGrid>
   );

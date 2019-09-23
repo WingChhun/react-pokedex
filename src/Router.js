@@ -19,7 +19,7 @@ class AppRouter extends Component {
     return (
       <Router>
         <Route exact path={'/'} component={Main} />
-        <Route path={'/detailed'} component={Detailed} />
+        <Route path={'/detailed/:id'} component={Detailed} />
       </Router>
     );
   }
