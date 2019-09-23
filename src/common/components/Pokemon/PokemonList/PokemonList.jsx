@@ -1,26 +1,22 @@
-import React, { useState, useContext, memo } from 'react';
-import PropTypes from 'prop-types';
+import React, { useContext, memo } from 'react';
 import styled from 'styled-components';
 import { PokemonContext } from '../../../context';
 import { PokemonCard } from '../';
 
 const PokemonGrid = styled.div`
   width: 100%;
+  max-width: 95vw;
   height: 100%;
+  margin: 20px auto;
   border: 3px solid red;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  grid-gap: 8px;
+  grid-gap: 20px;
 `;
 
-//todo: this should ujse Pokemon Provider and consumer
-//todo: How should I save the pokemon?
-
-//todo: this should render w.e is passed in, trust props
-
-//todo; build a container in styled components that renders Pokemon components
 function PokemonList(props) {
-  const { pokemon } = useContext(PokemonContext);
+  const [state] = useContext(PokemonContext);
+  const { pokemon } = state;
 
   const pokemonList = Object.values(pokemon);
 
@@ -33,12 +29,5 @@ function PokemonList(props) {
     </PokemonGrid>
   );
 }
-
-PokemonList.propTypes = {
-  pokemon: PropTypes.object //todo: update shape
-};
-PokemonList.defaultProps = {
-  pokemon: {}
-};
 
 export default memo(PokemonList);

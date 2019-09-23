@@ -1,59 +1,75 @@
-import React, { PureComponent, createContext } from 'react';
+import React, { createContext, useReducer, useEffect } from 'react';
 import _keyBy from 'lodash/keyBy';
-import { POKEMON } from '../constants';
-import { fetchPokemon } from '../api';
+import { POKEMON, API } from '../constants';
 import LocalStorageMgr from '../LocalStorageMgr';
 
 const LIMIT = 151;
-
 const PokemonContext = createContext();
-const { Provider, Consumer } = PokemonContext;
 
-class PokemonProvider extends PureComponent {
-  constructor(props) {
-    super(props);
+const initialState = {
+  filterStr: '',
+  showSaved: false,
+  pokemon: {}
+};
 
-    this.state = {
-      filterStr: '',
-      pokemon: LocalStorageMgr.getReducer(POKEMON.ALL) || {},
-      onChange: this.onChangeFilter
-    };
+//todo: Make constants for this reducer
+const reducer = (state, action) => {
+  const { type, payload } = action;
+
+  switch (type) {
+    case 'CHANGE_FILTER':
+      return {
+        filterStr: payload
+      };
+
+    case 'READ_POKEMON':
+      return {
+        pokemon: payload
+      };
+
+    case 'TOGGLE_SHOW_SAVED':
+      return { showSaved: payload };
+
+    default:
+      throw new Error('Action type must be defined');
   }
+};
 
-  async componentDidMount() {
-    const { pokemon } = this.state;
+const PokemonProvider = ({ children, ...rest }) => {
+  const [state, dispatch] = useReducer(reducer, initialState);
 
-    if (!pokemon.length) {
-      //fixme: remove later
-      console.warn('Fetching Pokemon in PokemonContext');
+  //componentDidMount
+  useEffect(() => {
+    const cachedPokemon = LocalStorageMgr.getReducer(POKEMON.ALL) || {};
+
+    async function fetchPokemon() {
       try {
-        const { results = [] } = await fetchPokemon(LIMIT);
+        const res = await fetch(`${API.BASE}/pokemon?limit=${LIMIT}`);
+        const { results = [] } = await res.json();
+        const payload = _keyBy(results, 'name');
 
-        if (results.length) {
-          const keyedPokemon = _keyBy(results, 'name');
-          LocalStorageMgr.setReducer(POKEMON.ALL, keyedPokemon);
-          this.setState({ pokemon: keyedPokemon });
-        }
+        dispatch({
+          type: 'READ_POKEMON',
+          payload
+        });
+
+        LocalStorageMgr.setReducer(POKEMON.ALL, payload);
       } catch (err) {
-        //todo: this could go into a snackbar
         console.warn('Error in PokemonContext fetching request', err);
       }
     }
-  }
 
-  onChangeFilter = value => this.setState({ filterStr: value });
+    //Call fetchPokemon if none are cached
+    Object.keys(cachedPokemon).length === 0
+      ? fetchPokemon()
+      : dispatch({ type: 'READ_POKEMON', payload: cachedPokemon });
+  }, []);
 
-  render() {
-    const { children, ...rest } = this.props;
-    const { pokemon } = this.state; //remove after debugging
-
-    return (
-      <Provider value={this.state} {...rest}>
-        <p>{JSON.stringify(pokemon)}</p>
-        {children}
-      </Provider>
-    );
-  }
-}
+  return (
+    <PokemonContext.Provider value={[state, dispatch]} {...rest}>
+      {children}
+    </PokemonContext.Provider>
+  );
+};
 
 export { PokemonProvider, PokemonContext };
