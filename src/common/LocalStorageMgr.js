@@ -33,7 +33,7 @@ class LocalStorage {
 
     switch (action) {
       case POKEMON.ALL:
-        return { ...this._session[POKEMON.ALL] };
+        return this._session[POKEMON.ALL];
     }
   };
 }
