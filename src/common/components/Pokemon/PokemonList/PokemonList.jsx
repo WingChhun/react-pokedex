@@ -19,11 +19,11 @@ function PokemonList({ history }) {
   const { pokemon } = state;
 
   //
-  const toggleView = ({ url }) => e => {
+  const toggleView = ({ name, url }) => e => {
     e.preventDefault();
 
     history.push({
-      pathname: `/detailed/${pokemon.name}`,
+      pathname: `/detailed/${name}`,
       state: { url }
     });
   };
