@@ -1,49 +1,20 @@
 import React, { createContext, useReducer, useEffect } from 'react';
 import { POKEMON, API } from '../constants';
+import { pokemonReducer } from './reducers';
 import LocalStorageMgr from '../LocalStorageMgr';
 
 const LIMIT = 151;
 const PokemonContext = createContext();
 
-const initialState = {
-  filterStr: '',
-  showSaved: false,
-  pokemon: {},
-  savedPokemon: []
-};
-
-//todo: Make constants for this reducer
-const reducer = (state, action) => {
-  const { type, payload } = action;
-
-  switch (type) {
-    case 'CHANGE_FILTER':
-      return {
-        filterStr: payload
-      };
-
-    case 'READ_POKEMON':
-      return {
-        pokemon: payload
-      };
-
-    case 'TOGGLE_SHOW_SAVED':
-      return { showSaved: payload };
-
-    case 'SAVED_POKEMON':
-      return {
-        savedPokemon: [...state.savedPokemon, payload]
-      };
-
-    default:
-      throw new Error('Action type must be defined');
-  }
-};
-
 const PokemonProvider = ({ children, history, ...rest }) => {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(pokemonReducer, {
+    filterStr: '',
+    showSaved: false,
+    pokemon: {},
+    savedPokemon: [],
+    selected: LocalStorageMgr.getReducer(POKEMON.SELECT) || {}
+  });
 
-  //componentDidMount
   useEffect(() => {
     const cachedPokemon = LocalStorageMgr.getReducer(POKEMON.ALL) || {};
 
@@ -71,7 +42,7 @@ const PokemonProvider = ({ children, history, ...rest }) => {
 
   return (
     <PokemonContext.Provider value={[state, dispatch]}>
-      {React.cloneElement(children, { history })}
+      {children}
     </PokemonContext.Provider>
   );
 };

@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import _startCase from 'lodash/startCase';
 
 const Card = styled.div`
   height: 100%;
@@ -8,8 +9,9 @@ const Card = styled.div`
   min-height: 200px;
   border: 2px solid orange;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
 
   //todo: this could be added to theme(MUI box shadow)
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
@@ -29,15 +31,20 @@ const Image = styled.img`
   border: 1.5px dotted red;
 `;
 
+const Name = styled.h3`
+  font-size: 16px;
+`;
+
 const getImage = spriteId =>
   `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${spriteId}.png`;
 
 function PokemonCard({ pokemon, onClick, spriteId }) {
-  const { name } = pokemon;
+  const { name = '' } = pokemon;
 
   return (
     <Card onClick={onClick}>
       <Image src={getImage(spriteId)} alt={`${name} image`} />
+      <Name>{_startCase(name)}</Name>
     </Card>
   );
 }
@@ -52,4 +59,4 @@ PokemonCard.defaultProps = {
   spriteId: 1
 };
 
-export default PokemonCard;
+export default memo(PokemonCard);

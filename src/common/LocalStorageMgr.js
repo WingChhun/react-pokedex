@@ -31,10 +31,7 @@ class LocalStorage {
   getReducer = action => {
     if (!action) return null;
 
-    switch (action) {
-      case POKEMON.ALL:
-        return this._session[POKEMON.ALL];
-    }
+    return this._session[action];
   };
 }
 

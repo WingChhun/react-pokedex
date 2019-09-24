@@ -2,11 +2,10 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { Main, Detailed } from './views';
 import LocalStorageMgr from './common/LocalStorageMgr';
+import { PokemonProvider } from './common/context';
 
 LocalStorageMgr.init();
 class AppRouter extends Component {
-  //todo: /detailed should have a unique id associated with the URL
-
   componentDidMount() {
     //event listener to cache SESSION
     window.addEventListener('beforeunload', e => {
@@ -17,10 +16,12 @@ class AppRouter extends Component {
 
   render() {
     return (
-      <Router>
-        <Route exact path={'/'} component={Main} />
-        <Route path={'/detailed/:id'} component={Detailed} />
-      </Router>
+      <PokemonProvider>
+        <Router>
+          <Route exact path={'/'} component={Main} />
+          <Route path={'/detailed/:id'} component={Detailed} />
+        </Router>
+      </PokemonProvider>
     );
   }
 }

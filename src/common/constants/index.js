@@ -14,5 +14,6 @@ export const MODE_CORS = 'cors';
 //LocalStorage
 export const SESSION = 'SESSION';
 export const POKEMON = Object.freeze({
-  ALL: 'ALL_POKEMON'
+  ALL: 'ALL_POKEMON',
+  SELECT: 'SELECT_POKEMON'
 });

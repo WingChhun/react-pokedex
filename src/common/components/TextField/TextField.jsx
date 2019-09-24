@@ -10,10 +10,28 @@ const Input = styled.input`
   padding: 8px 12px;
 `;
 
+export const PokemonTextField = props => {
+  const [{ filterStr }, dispatch] = useContext(PokemonContext);
+
+  return (
+    <TextField
+      value={filterStr}
+      onChange={value => dispatch({ type: 'CHANGE_FILTER', payload: value })}
+    />
+  );
+};
+
 export const TextField = props => {
   const { value, type, onChange, ...rest } = props;
 
-  return <Input type={type} value={value} onChange={onChange} {...rest} />;
+  return (
+    <Input
+      type={type}
+      value={value}
+      onChange={e => onChange(e.target.value)}
+      {...rest}
+    />
+  );
 };
 
 TextField.propTypes = {
@@ -27,12 +45,4 @@ TextField.defaultProps = {
   value: '',
   type: 'text',
   onChange: _noop()
-};
-
-export const PokemonTextField = props => {
-  const { filterStr: value, onChangeFilter: onChange } = useContext(
-    PokemonContext
-  );
-
-  return <TextField value={value} onChange={onChange} />;
 };

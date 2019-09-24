@@ -1,38 +1,46 @@
-import React, { Component, useEffect, useReducer } from 'react';
-import PropTypes from 'react';
+import React, { Component, useEffect, useContext, useState } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { PokemonContext } from '../../common/context';
+import { PokemonCard } from '../../common/components';
 
-//todo: pull out state and use effect
-//todo: this page needs to be able to toggle saved pokemon, so it needs a dispatch
+//todo: How to hook in google map?
+const Detailed = props => {
+  const [state, dispatch] = useContext(PokemonContext);
+  const [detailed, setDetailed] = useState({});
+  const { pokemon, id } = state.selected;
 
-//todo: create a reducer
-
-const reducer = (state, action) => {
-  const { type, payload } = action;
-
-  switch (type) {
-    default:
-      throw new Error('Need type');
-  }
-};
-const Detailed = ({ location }) => {
-  const { url: API_DETAILED } = location.state; //provided by roouter
-  //componentDidMount, query the url in the history
+  
   useEffect(() => {
     async function fetchDetailed() {
       try {
-        const res = await fetch(API_DETAILED);
-        const data = await res.json();
+        const res = await fetch(pokemon.url);
+        const { height, weight, abilities, types, moves } = await res.json();
 
-        //ex: https://pokeapi.co/api/v2/pokemon/3/
-        //note:
+        setDetailed({
+          height,
+          weight,
+          abilities,
+          types,
+          moves
+        });
       } catch (err) {
         console.warn('Error fetching detailed Pokemon request');
       }
     }
-  }, [API_DETAILED]);
+
+    fetchDetailed();
+  });
 
   return <div>DETAILED VIEW!</div>;
+};
+
+Detailed.propTypes = {
+  location: PropTypes.object
+};
+
+Detailed.defaultProps = {
+  location: {}
 };
 
 export default Detailed;
