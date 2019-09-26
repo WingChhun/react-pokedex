@@ -3,6 +3,7 @@ import { POKEMON } from '../constants';
 import { fetchPokemon } from '../api';
 import { pokemonReducer } from './reducers';
 import LocalStorageMgr from '../LocalStorageMgr';
+import _map from 'lodash/map';
 
 const LIMIT = 151;
 const PokemonContext = createContext();
@@ -21,14 +22,19 @@ const PokemonProvider = ({ children }) => {
 
     async function getPokemon() {
       try {
-        const { results: payload } = await fetchPokemon(LIMIT);
+        const { results } = await fetchPokemon(LIMIT);
+        //Note: preserve the spriteId to be used for filtering images
+        const mappedByIndex = results.map((pokemon, spriteId) => ({
+          ...pokemon,
+          spriteId: spriteId + 1
+        }));
 
         dispatch({
           type: 'READ_POKEMON',
-          payload
+          payload: mappedByIndex
         });
 
-        LocalStorageMgr.setReducer(POKEMON.ALL, payload);
+        LocalStorageMgr.setReducer(POKEMON.ALL, mappedByIndex);
       } catch (err) {
         console.warn('Error in PokemonContext fetching request', err);
       }

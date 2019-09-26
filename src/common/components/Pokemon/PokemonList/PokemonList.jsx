@@ -23,7 +23,7 @@ function PokemonList({ data, onClickItem }) {
       {data.map((pokemon, id) => (
         <PokemonCard
           key={`${pokemon.name}__${id}`}
-          spriteId={id + 1}
+          spriteId={pokemon.spriteId}
           name={pokemon.name}
           onClick={onClickItem(pokemon, id)}
         />
