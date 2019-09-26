@@ -1,6 +1,6 @@
-import React, { useContext, memo } from 'react';
+import React, { memo } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { PokemonContext } from '../../../context';
 import { PokemonCard } from '../';
 
 //todo: move into a ui/elements folder
@@ -15,40 +15,26 @@ const PokemonGrid = styled.div`
   grid-gap: 20px;
 `;
 
-//todo: this should be a connected container, and all data should be passed into a reusable memoized List instead
-function PokemonList({ history }) {
-  const [state, dispatch] = useContext(PokemonContext);
-  const { pokemon, savedPokemon, showSaved } = state;
+function PokemonList({ data, onClickItem }) {
+  if (!data.length) return null;
 
-  const toggleView = (pokemon, id) => e => {
-    e.preventDefault();
-
-    history.push({
-      pathname: `/detailed/${pokemon.name}`,
-      state: { selected: pokemon, id }
-    });
-
-    dispatch({
-      type: 'SELECT_POKEMON',
-      payload: { pokemon, id }
-    });
-  };
-
-  const renderList = pokemon => {
-    if (!pokemon.length) return null;
-
-    return pokemon.map((pokemon, id) => (
-      <PokemonCard
-        key={`${pokemon.name}__${id}`}
-        spriteId={id + 1}
-        pokemon={pokemon}
-        onClick={toggleView(pokemon, id)}
-      />
-    ));
-  };
   return (
-    <PokemonGrid>{renderList(showSaved ? savedPokemon : pokemon)}</PokemonGrid>
+    <PokemonGrid>
+      {data.map((pokemon, id) => (
+        <PokemonCard
+          key={`${pokemon.name}__${id}`}
+          spriteId={id + 1}
+          name={pokemon.name}
+          onClick={onClickItem(pokemon, id)}
+        />
+      ))}
+    </PokemonGrid>
   );
 }
 
-export default PokemonList;
+PokemonList.propTypes = {
+  data: PropTypes.array.isRequired,
+  onClickItem: PropTypes.func.isRequired
+};
+
+export default memo(PokemonList);

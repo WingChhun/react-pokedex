@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import _startCase from 'lodash/startCase';
+import _noop from 'lodash/noop';
 
 const Card = styled.div`
   height: 100%;
@@ -35,11 +36,9 @@ const Name = styled.h3`
   font-size: 16px;
 `;
 
-const getImage = spriteId =>
-  `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${spriteId}.png`;
-
-function PokemonCard({ pokemon, onClick, spriteId }) {
-  const { name = '' } = pokemon;
+const PokemonCard = ({ name, onClick, spriteId }) => {
+  const getImage = spriteId =>
+    `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${spriteId}.png`;
 
   return (
     <Card onClick={onClick}>
@@ -47,15 +46,16 @@ function PokemonCard({ pokemon, onClick, spriteId }) {
       <Name>{_startCase(name)}</Name>
     </Card>
   );
-}
+};
 
-//todo: updatepokemon shape
 PokemonCard.propTypes = {
-  pokemon: PropTypes.object.isRequired,
+  name: PropTypes.string,
   onClick: PropTypes.func,
   spriteId: PropTypes.number
 };
 PokemonCard.defaultProps = {
+  name: '',
+  onClick: _noop(),
   spriteId: 1
 };
 

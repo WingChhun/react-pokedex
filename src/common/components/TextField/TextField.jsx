@@ -1,8 +1,7 @@
-import React, { useContext } from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import _noop from 'lodash/noop';
-import { PokemonContext } from '../../context';
 
 const Input = styled.input`
   border: 2px solid red;
@@ -10,28 +9,10 @@ const Input = styled.input`
   padding: 8px 12px;
 `;
 
-export const PokemonTextField = props => {
-  const [{ filterStr }, dispatch] = useContext(PokemonContext);
-
-  return (
-    <TextField
-      value={filterStr}
-      onChange={value => dispatch({ type: 'CHANGE_FILTER', payload: value })}
-    />
-  );
-};
-
-export const TextField = props => {
+const TextField = props => {
   const { value, type, onChange, ...rest } = props;
 
-  return (
-    <Input
-      type={type}
-      value={value}
-      onChange={e => onChange(e.target.value)}
-      {...rest}
-    />
-  );
+  return <Input type={type} value={value} onChange={onChange} {...rest} />;
 };
 
 TextField.propTypes = {
@@ -46,3 +27,5 @@ TextField.defaultProps = {
   type: 'text',
   onChange: _noop()
 };
+
+export default memo(TextField);

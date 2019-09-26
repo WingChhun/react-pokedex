@@ -1,12 +1,13 @@
 import React, { createContext, useReducer, useEffect } from 'react';
-import { POKEMON, API } from '../constants';
+import { POKEMON } from '../constants';
+import { fetchPokemon } from '../api';
 import { pokemonReducer } from './reducers';
 import LocalStorageMgr from '../LocalStorageMgr';
 
 const LIMIT = 151;
 const PokemonContext = createContext();
 
-const PokemonProvider = ({ children, history, ...rest }) => {
+const PokemonProvider = ({ children }) => {
   const [state, dispatch] = useReducer(pokemonReducer, {
     filterStr: '',
     showSaved: false,
@@ -18,10 +19,9 @@ const PokemonProvider = ({ children, history, ...rest }) => {
   useEffect(() => {
     const cachedPokemon = LocalStorageMgr.getReducer(POKEMON.ALL) || {};
 
-    async function fetchPokemon() {
+    async function getPokemon() {
       try {
-        const res = await fetch(`${API.BASE}/pokemon?limit=${LIMIT}`);
-        const { results: payload } = await res.json();
+        const { results: payload } = await fetchPokemon(LIMIT);
 
         dispatch({
           type: 'READ_POKEMON',
@@ -36,7 +36,7 @@ const PokemonProvider = ({ children, history, ...rest }) => {
 
     //Call fetchPokemon if none are cached
     Object.keys(cachedPokemon).length === 0
-      ? fetchPokemon()
+      ? getPokemon()
       : dispatch({ type: 'READ_POKEMON', payload: cachedPokemon });
   }, []);
 

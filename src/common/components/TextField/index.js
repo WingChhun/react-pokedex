@@ -1,1 +1,1 @@
-export { TextField, PokemonTextField } from './TextField';
+export { default } from './TextField';
