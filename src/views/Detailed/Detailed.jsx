@@ -24,7 +24,7 @@ function useMaps(mapID) {
 
   useEffect(() => {
     fetchLocations();
-  }, [fetchLocations, mapID]);
+  }, [ mapID]);
 
   return [locations, setLocations];
 }
