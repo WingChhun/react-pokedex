@@ -6,6 +6,7 @@ import {
   SAVED_POKEMON,
   SELECT_POKEMON
 } from '../../constants';
+import _findIndex from 'lodash/findIndex';
 
 export const pokemonReducer = (state, action) => {
   const { type, payload } = action;
@@ -32,13 +33,29 @@ export const pokemonReducer = (state, action) => {
       };
 
     case SAVED_POKEMON:
-      const data = [...state.savedPokemon, payload];
-      LocalStorageMgr.setReducer(SAVED_POKEMON, data);
+      const savedPokemon = [...state.savedPokemon];
+      let found = -1;
 
-      return {
-        ...state,
-        savedPokemon: data
-      };
+      //Check if exists
+      if (savedPokemon.length || payload) {
+        const foundIndex = _findIndex(
+          savedPokemon,
+          ({ spriteId }) => spriteId === payload.spriteId
+        );
+
+        foundIndex >= 0
+          ? savedPokemon.splice(foundIndex, 1)
+          : savedPokemon.push(payload);
+
+        LocalStorageMgr.setReducer(SAVED_POKEMON, savedPokemon);
+
+        return {
+          ...state,
+          savedPokemon
+        };
+      }
+
+      return { ...state };
 
     case SELECT_POKEMON:
       LocalStorageMgr.setReducer(SELECT_POKEMON, payload);

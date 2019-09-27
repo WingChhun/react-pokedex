@@ -48,23 +48,39 @@ describe(`pokemon Reducer`, () => {
   });
 
   it(`SAVED_POKEMON`, () => {
-    const action = { type: SAVED_POKEMON, payload: 4 };
+    const action = { type: SAVED_POKEMON, payload: { spriteId: 1 } };
 
+    //ADD
     expect(
       pokemonReducer(
         {
-          savedPokemon: [1, 2, 3]
+          savedPokemon: []
         },
         action
       )
     ).toEqual({
-      savedPokemon: [...[1, 2, 3], 4]
+      savedPokemon: [{ spriteId: 1 }]
     });
 
     expect(setReducerSpy).toHaveBeenCalledWith(SAVED_POKEMON, [
-      ...[1, 2, 3],
-      4
+      { spriteId: 1 }
     ]);
+
+    setReducerSpy.mockClear();
+
+    //REMOVES
+    expect(
+      pokemonReducer(
+        {
+          savedPokemon: [{ spriteId: 1 }]
+        },
+        action
+      )
+    ).toEqual({
+      savedPokemon: []
+    });
+
+    expect(setReducerSpy).toHaveBeenCalledWith(SAVED_POKEMON, []);
   });
 
   it(`SELECT_POKEMON`, () => {
