@@ -1,7 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import _filter from 'lodash/filter';
-import {CHANGE_FILTER, SELECT_POKEMON, TOGGLE_SHOW_SAVED } from '../../common/constants';
+import {
+  CHANGE_FILTER,
+  SELECT_POKEMON,
+  TOGGLE_SHOW_SAVED
+} from '../../common/constants';
 import { PokemonContext } from '../../common/context';
 import { TextField, Toggle } from '../../common/components';
 
@@ -73,10 +78,20 @@ function Main({ history }) {
       </TopContainer>
 
       <React.Suspense fallback={<div>Loading...</div>}>
-        <PokemonList data={filtered} onClickItem={onClickPokemon} marginTop />
+        <PokemonList
+          id="pokemonList"
+          data={filtered}
+          onClickItem={onClickPokemon}
+          marginTop
+        />
       </React.Suspense>
     </MainContainer>
   );
 }
+
+Main.contextTypes = {
+  state: PropTypes.object,
+  dispatch: PropTypes.func
+};
 
 export default Main;

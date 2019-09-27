@@ -36,4 +36,5 @@ class LocalStorage {
 }
 
 const LocalStorageMgr = new LocalStorage();
-export default LocalStorageMgr;
+
+export { LocalStorageMgr, LocalStorage };

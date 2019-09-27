@@ -2,7 +2,7 @@ import React, { createContext, useReducer, useEffect } from 'react';
 import { SELECT_POKEMON, READ_POKEMON, SAVED_POKEMON } from '../constants';
 import { fetchPokemon } from '../api';
 import { pokemonReducer } from './reducers';
-import LocalStorageMgr from '../LocalStorageMgr';
+import { LocalStorageMgr } from '../LocalStorageMgr';
 
 const LIMIT = 151;
 const PokemonContext = createContext();

@@ -1,4 +1,4 @@
-import LocalStorageMgr from '../../LocalStorageMgr';
+import { LocalStorageMgr } from '../../LocalStorageMgr';
 import {
   CHANGE_FILTER,
   READ_POKEMON,
