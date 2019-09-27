@@ -3,17 +3,16 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import _noop from 'lodash/noop';
 
-//todo: move to new folder for elements
 const Container = styled.div`
-  width: 100%;
+  width: ${props => (props.width ? props.width : '100%')};
   height: 100%;
-  border: 2px solid #44ebff;
+  border: 1.5px solid #44ebff;
   display: flex;
   align-items: center;
   height: 32px;
+  border-radius: 8px;
 `;
 
-//todo: add transition
 const Option = styled.div`
   background-color: ${props =>
     props.selected ? 'rgba(68, 235, 255, 0.7)' : null};
@@ -22,11 +21,12 @@ const Option = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: 0.3s all ease-in;
 `;
 
-function Toggle({ checked, onClick }) {
+function Toggle({ checked, onClick, width }) {
   return (
-    <Container onClick={onClick}>
+    <Container onClick={onClick} width={width}>
       <Option selected={!checked}>All</Option>
       <Option selected={checked}>Bag</Option>
     </Container>

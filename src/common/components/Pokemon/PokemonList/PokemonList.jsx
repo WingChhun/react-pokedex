@@ -3,20 +3,19 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { PokemonCard } from '../';
 
-//todo: move into a ui/elements folder
 const PokemonGrid = styled.div`
   width: 100%;
-  max-width: 95vw;
-  height: 100%;
-  margin: 20px auto;
-  border: 3px solid red;
+  height: auto;
+  margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  grid-gap: 20px;
+  grid-gap: 40px;
+  min-height: 500px;
+  margin-bottom: 60px;
 `;
 
 function PokemonList({ data, onClickItem }) {
-  if (!data.length) return null;
+  if (!data.length) return <PokemonGrid />;
 
   return (
     <PokemonGrid>
@@ -33,8 +32,11 @@ function PokemonList({ data, onClickItem }) {
 }
 
 PokemonList.propTypes = {
-  data: PropTypes.array.isRequired,
-  onClickItem: PropTypes.func.isRequired
+  data: PropTypes.array,
+  onClickItem: PropTypes.func
+};
+PokemonList.defaultProps = {
+  data: []
 };
 
 export default memo(PokemonList);

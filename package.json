@@ -2,7 +2,9 @@
   "name": "react-pokedex",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:3000",
   "dependencies": {
+    "google-maps-react": "^2.0.2",
     "lodash": "^4.17.15",
     "memoize-one": "^5.1.1",
     "prop-types": "^15.7.2",

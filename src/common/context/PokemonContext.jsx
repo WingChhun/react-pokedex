@@ -1,9 +1,8 @@
 import React, { createContext, useReducer, useEffect } from 'react';
-import { POKEMON } from '../constants';
+import { SELECT_POKEMON, READ_POKEMON } from '../constants';
 import { fetchPokemon } from '../api';
 import { pokemonReducer } from './reducers';
 import LocalStorageMgr from '../LocalStorageMgr';
-import _map from 'lodash/map';
 
 const LIMIT = 151;
 const PokemonContext = createContext();
@@ -14,27 +13,26 @@ const PokemonProvider = ({ children }) => {
     showSaved: false,
     pokemon: {},
     savedPokemon: [],
-    selected: LocalStorageMgr.getReducer(POKEMON.SELECT) || {}
+    selected: LocalStorageMgr.getReducer(SELECT_POKEMON) || {}
   });
 
   useEffect(() => {
-    const cachedPokemon = LocalStorageMgr.getReducer(POKEMON.ALL) || {};
+    const cachedPokemon = LocalStorageMgr.getReducer(READ_POKEMON) || {};
 
     async function getPokemon() {
       try {
         const { results } = await fetchPokemon(LIMIT);
-        //Note: preserve the spriteId to be used for filtering images
         const mappedByIndex = results.map((pokemon, spriteId) => ({
           ...pokemon,
           spriteId: spriteId + 1
         }));
 
         dispatch({
-          type: 'READ_POKEMON',
+          type:READ_POKEMON,
           payload: mappedByIndex
         });
 
-        LocalStorageMgr.setReducer(POKEMON.ALL, mappedByIndex);
+        LocalStorageMgr.setReducer(READ_POKEMON, mappedByIndex);
       } catch (err) {
         console.warn('Error in PokemonContext fetching request', err);
       }

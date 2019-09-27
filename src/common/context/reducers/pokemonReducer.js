@@ -1,38 +1,45 @@
 import LocalStorageMgr from '../../LocalStorageMgr';
-import { POKEMON } from '../../constants';
+import {
+  CHANGE_FILTER,
+  READ_POKEMON,
+  TOGGLE_SHOW_SAVED,
+  SAVED_POKEMON,
+  SELECT_POKEMON
+} from '../../constants';
 
 export const pokemonReducer = (state, action) => {
   const { type, payload } = action;
 
   switch (type) {
-    case 'CHANGE_FILTER':
+    case CHANGE_FILTER:
       return {
         ...state,
         filterStr: payload
       };
 
-    case 'READ_POKEMON':
-      LocalStorageMgr.setReducer(POKEMON.ALL, payload);
+    case READ_POKEMON:
+      LocalStorageMgr.setReducer(READ_POKEMON, payload);
 
       return {
         ...state,
         pokemon: payload
       };
 
-    case 'TOGGLE_SHOW_SAVED':
+    case TOGGLE_SHOW_SAVED:
       return {
         ...state,
         showSaved: !state.showSaved
       };
 
-    case 'SAVED_POKEMON':
+    case SAVED_POKEMON:
+      LocalStorageMgr.setReducer(SAVED_POKEMON, payload);
       return {
         ...state,
         savedPokemon: [...state.savedPokemon, payload]
       };
 
-    case 'SELECT_POKEMON':
-      LocalStorageMgr.setReducer(POKEMON.SELECT, payload);
+    case SELECT_POKEMON:
+      LocalStorageMgr.setReducer(SELECT_POKEMON, payload);
       return {
         ...state,
         selected: payload

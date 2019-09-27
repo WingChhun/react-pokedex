@@ -7,14 +7,15 @@ import _noop from 'lodash/noop';
 const Card = styled.div`
   height: 100%;
   width: 100%;
-  min-height: 200px;
+  max-height: ${props => (props.minHeight ? props.minHeight : '225px')};
+max-height: ${props => props.maxHeight ? props.maxHeight:'250px'};
   border: 2px solid orange;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
 
-  //todo: this could be added to theme(MUI box shadow)
+  //MUI Box shadow
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 
@@ -27,22 +28,20 @@ const Card = styled.div`
 const Image = styled.img`
   width: 100%;
   height: 100%;
-  max-height: 200px;
-
-  border: 1.5px dotted red;
+max-height: ${props => props.maxHeight ? `${props.maxHeight - 50}px`: '200px'};
 `;
 
 const Name = styled.h3`
   font-size: 16px;
 `;
 
-const PokemonCard = ({ name, onClick, spriteId }) => {
+const PokemonCard = ({ name, onClick, spriteId, maxHeight, ...rest }) => {
   const getImage = spriteId =>
     `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${spriteId}.png`;
 
   return (
-    <Card onClick={onClick}>
-      <Image src={getImage(spriteId)} alt={`${name} image`} />
+    <Card onClick={onClick} maxHeight={maxHeight}>
+      <Image src={getImage(spriteId)} alt={`${name} image`} maxHeight={maxHeight}/>
       <Name>{_startCase(name)}</Name>
     </Card>
   );
@@ -59,4 +58,4 @@ PokemonCard.defaultProps = {
   spriteId: 1
 };
 
-export default memo(PokemonCard);
+export default PokemonCard;
