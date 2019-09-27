@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { Main, Detailed } from './views';
-import LocalStorageMgr from './common/LocalStorageMgr';
+import { LocalStorageMgr } from './common/LocalStorageMgr';
 import { PokemonProvider } from './common/context';
 
 LocalStorageMgr.init();
