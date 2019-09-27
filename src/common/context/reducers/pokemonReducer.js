@@ -32,10 +32,12 @@ export const pokemonReducer = (state, action) => {
       };
 
     case SAVED_POKEMON:
-      LocalStorageMgr.setReducer(SAVED_POKEMON, payload);
+      const data = [...state.savedPokemon, payload];
+      LocalStorageMgr.setReducer(SAVED_POKEMON, data);
+
       return {
         ...state,
-        savedPokemon: [...state.savedPokemon, payload]
+        savedPokemon: data
       };
 
     case SELECT_POKEMON:

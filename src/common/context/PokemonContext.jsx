@@ -1,5 +1,5 @@
 import React, { createContext, useReducer, useEffect } from 'react';
-import { SELECT_POKEMON, READ_POKEMON } from '../constants';
+import { SELECT_POKEMON, READ_POKEMON, SAVED_POKEMON } from '../constants';
 import { fetchPokemon } from '../api';
 import { pokemonReducer } from './reducers';
 import LocalStorageMgr from '../LocalStorageMgr';
@@ -12,7 +12,7 @@ const PokemonProvider = ({ children }) => {
     filterStr: '',
     showSaved: false,
     pokemon: {},
-    savedPokemon: [],
+    savedPokemon: LocalStorageMgr.getReducer(SAVED_POKEMON) || [],
     selected: LocalStorageMgr.getReducer(SELECT_POKEMON) || {}
   });
 
@@ -28,7 +28,7 @@ const PokemonProvider = ({ children }) => {
         }));
 
         dispatch({
-          type:READ_POKEMON,
+          type: READ_POKEMON,
           payload: mappedByIndex
         });
 

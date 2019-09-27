@@ -9,7 +9,6 @@ const Card = styled.div`
   width: 100%;
   max-height: ${props => (props.minHeight ? props.minHeight : '225px')};
 max-height: ${props => props.maxHeight ? props.maxHeight:'250px'};
-  border: 2px solid orange;
   display: flex;
   flex-direction: column;
   align-items: center;
